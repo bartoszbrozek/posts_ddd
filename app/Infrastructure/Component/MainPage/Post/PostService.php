@@ -18,7 +18,7 @@ class PostService
     public function createPost(string $title, string $content)
     {
         $userId = Auth::user()->getId();
-        $post = $this->postHydrator->hydrate([$title, $content, $userId]);
+        $post = $this->postHydrator->hydrate(compact($title, $content, $userId));
 
         $this->postRepositoryInterface->add($post);
     }
