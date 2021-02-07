@@ -14,7 +14,7 @@ services:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
         volumes:
-            - '.:/var/www/html'
+            - mycache-myclusters:/var/www/html:cached
         networks:
             - sail
         depends_on:
@@ -70,3 +70,5 @@ volumes:
         driver: local
     sailredis:
         driver: local
+    mycache-myclusters:
+        external: true
