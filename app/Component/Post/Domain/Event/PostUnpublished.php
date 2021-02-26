@@ -5,7 +5,7 @@ namespace App\Component\Post\Domain\Event;
 use App\Component\Post\Domain\Post;
 use App\Shared\Domain\DomainEventInterface;
 
-class PostCreated implements DomainEventInterface
+class PostUnpublished implements DomainEventInterface
 {
     public function __construct(private Post $post)
     {

@@ -2,8 +2,11 @@
 
 namespace App\Component\Post\Domain;
 
-use App\Component\Post\Domain\DTO\Post as PostDTO;
-use App\Component\Post\Domain\Event\PostCreated;
+use App\Component\Post\Domain\Enum\Status;
+use App\Component\Post\Domain\Event\PostPublished;
+use App\Component\Post\Domain\Event\PostUnpublished;
+use App\Component\Post\Domain\Exception\PostPublishException;
+use App\Component\Post\Domain\Exception\PostUnpublishException;
 use App\Component\Post\Domain\ValueObject\PostContent;
 use App\Component\Post\Domain\ValueObject\PostId;
 use App\Component\Post\Domain\ValueObject\PostLink;
@@ -13,6 +16,8 @@ use App\Shared\Infrastructure\User;
 
 final class Post extends AggregateRoot
 {
+    private Status $status;
+
     public function __construct(
         private PostId $id,
         private PostTitle $postTitle,
@@ -21,7 +26,6 @@ final class Post extends AggregateRoot
         private array $tags = [],
         private User $user,
     ) {
-        $this->raise(new PostCreated($this));
     }
 
     public static function create(
@@ -33,6 +37,11 @@ final class Post extends AggregateRoot
         User $user,
     ): Post {
         return new self($id, $postTitle, $postLink, $postContent, $tags, $user,);
+    }
+
+    public function id(): PostId
+    {
+        return $this->id;
     }
 
     public function changeTitle(PostTitle $postTitle): void
@@ -53,5 +62,27 @@ final class Post extends AggregateRoot
     public function changeTags(array $tags): void
     {
         $this->tags = $tags;
+    }
+
+    public function publish(): void
+    {
+        if ($this->status === Status::PUBLISHED) {
+            throw new PostPublishException();
+        }
+
+        $this->status = Status::PUBLISHED;
+
+        $this->raise(new PostPublished($this));
+    }
+
+    public function unpublish(): void
+    {
+        if ($this->status === Status::UNPUBLISHED) {
+            throw new PostUnpublishException();
+        }
+
+        $this->status = Status::UNPUBLISHED;
+
+        $this->raise(new PostUnpublished($this));
     }
 }
