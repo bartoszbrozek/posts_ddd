@@ -2,10 +2,12 @@
 
 namespace App\Component\Post\Domain;
 
+use App\Component\Post\Domain\DTO\Post as PostDTO;
+use App\Component\Post\Domain\Event\PostCreated;
 use App\Component\Post\Domain\ValueObject\PostContent;
 use App\Component\Post\Domain\ValueObject\PostId;
 use App\Component\Post\Domain\ValueObject\PostLink;
-use App\Component\Tag\Domain\Tag;
+use App\Component\Post\Domain\ValueObject\PostTitle;
 use App\Shared\Domain\AggregateRoot;
 use App\Shared\Infrastructure\User;
 
@@ -13,35 +15,43 @@ final class Post extends AggregateRoot
 {
     public function __construct(
         private PostId $id,
+        private PostTitle $postTitle,
         private PostLink $postLink,
         private PostContent $postContent,
-        private User $user,
         private array $tags = [],
+        private User $user,
     ) {
+        $this->raise(new PostCreated($this));
     }
 
     public static function create(
         PostId $id,
+        PostTitle $postTitle,
         PostLink $postLink,
         PostContent $postContent,
-        User $user,
         array $tags = [],
+        User $user,
     ): Post {
-        return new self($id, $postLink, $postContent, $user, $tags);
+        return new self($id, $postTitle, $postLink, $postContent, $tags, $user,);
     }
 
-    public function updatePostLink(PostLink $postLink): void
+    public function changeTitle(PostTitle $postTitle): void
+    {
+        $this->postTitle = $postTitle;
+    }
+
+    public function changeLink(PostLink $postLink): void
     {
         $this->postLink = $postLink;
     }
 
-    public function updateContent(PostContent $postContent): void
+    public function changeContent(PostContent $postContent): void
     {
         $this->postContent = $postContent;
     }
 
-    public function addTag(Tag $tag): void
+    public function changeTags(array $tags): void
     {
-        $this->tags[$tag->id()] = $tag;
+        $this->tags = $tags;
     }
 }

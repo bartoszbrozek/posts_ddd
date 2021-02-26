@@ -21,7 +21,7 @@ class Uuid implements Stringable
         return $this->uuid;
     }
 
-    public function random(): static
+    public static function random(): static
     {
         return new static(RamseyUuid::uuid4()->toString());
     }
