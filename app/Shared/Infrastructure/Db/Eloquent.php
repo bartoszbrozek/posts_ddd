@@ -2,8 +2,8 @@
 
 namespace App\Shared\Infrastructure\Db;
 
-use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\DatabaseManager;
 
-interface Eloquent extends ConnectionInterface
+class Eloquent extends DatabaseManager implements DbConnection
 {
 }

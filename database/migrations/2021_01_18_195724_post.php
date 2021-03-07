@@ -15,7 +15,9 @@ class Post extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('uuid')->index()->unique();
             $table->string('title');
+            $table->string('link');
             $table->text('content');
             $table->foreignId('user_id');
             $table->timestamps();
@@ -29,6 +31,6 @@ class Post extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('posts');
     }
 }

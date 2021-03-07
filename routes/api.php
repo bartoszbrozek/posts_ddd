@@ -1,5 +1,6 @@
 <?php
 
+use App\Presentation\UI\Web\Frontend\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('')->group(function () {
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get(
+        '/posts',
+        [PostController::class, 'index',],
+    )->name('post.index');
+
+    Route::middleware('auth:api')->post(
+        '/posts',
+        [PostController::class, 'create',],
+    )->name('post.create');
 });

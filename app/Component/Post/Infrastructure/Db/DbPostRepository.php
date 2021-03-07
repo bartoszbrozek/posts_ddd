@@ -2,6 +2,7 @@
 
 namespace App\Component\Post\Infrastructure\Db;
 
+use App\Component\Post\Application\Query\DTO\PostHydrator;
 use App\Component\Post\Domain\Repository\PostRepository;
 use App\Component\Post\Domain\Post;
 use App\Component\Post\Domain\ValueObject\PostContent;
@@ -9,22 +10,53 @@ use App\Component\Post\Domain\ValueObject\PostId;
 use App\Component\Post\Domain\ValueObject\PostLink;
 use App\Component\Post\Domain\ValueObject\PostTitle;
 use App\Component\Post\Infrastructure\Exception\PostSaveException;
+use App\Component\Post\Infrastructure\PostCollection;
 use App\Presentation\UI\Web\Frontend\Models\User;
-use App\Shared\Infrastructure\Db\Eloquent;
 use App\Component\Tag\Domain\Tag;
+use App\Shared\Infrastructure\Db\DbConnection;
 use Exception;
 
 final class DbPostRepository implements PostRepository
 {
-    public function __construct(private Eloquent $db)
+    private const TABLE = 'posts';
+
+    public function __construct(
+        private DbConnection $db,
+        private PostHydrator $postHydrator,
+    ) {
+    }
+
+    public function findAll(): PostCollection
     {
+        $items = $this->db->connection()
+            ->table(self::TABLE)
+            ->join('users AS u', 'u.id', '=', self::TABLE . '.user_id')
+            ->get([
+                self::TABLE . '.uuid',
+                self::TABLE . '.title',
+                self::TABLE . '.link',
+                self::TABLE . '.content',
+                self::TABLE . '.created_at',
+                self::TABLE . '.updated_at',
+                'u.name AS user_name',
+            ]);
+
+        $collection = new PostCollection();
+
+        foreach ($items as $item) {
+            $collection->add(
+                $this->postHydrator->hydrate((array)$item),
+            );
+        }
+
+        return $collection;
     }
 
     // TODO
     public function findBy(PostId $postId): Post
     {
-        $data = $this->db
-            ->table('post')
+        $data = $this->db->connection()
+            ->table(self::TABLE)
             ->leftJoin('tags', '', '') // TODO
             ->join('user', '', '') // TODO
             ->where('uuid', $postId)
@@ -43,11 +75,11 @@ final class DbPostRepository implements PostRepository
     public function save(Post $post): void
     {
         try {
-            $this->db->beginTransaction();
+            $this->db->connection()->beginTransaction();
 
             $data = $post->toSnapshot();
-            $this->db
-                ->table('post')
+            $this->db->connection()
+                ->table(self::TABLE)
                 ->insert([
                     'uuid' => $data['uuid'],
                     'title' => $data['title'],
@@ -59,7 +91,7 @@ final class DbPostRepository implements PostRepository
             foreach ($data['tags'] as $tag) {
                 $tagData = $tag->toSnapshot();
 
-                $this->db
+                $this->db->connection()
                     ->table('tag')
                     ->insert([
                         'uuid' => $tagData['uuid'],
@@ -67,17 +99,17 @@ final class DbPostRepository implements PostRepository
                     ]);
             }
 
-            $this->db->commit();
+            $this->db->connection()->commit();
         } catch (Exception $ex) {
-            $this->db->rollBack();
+            $this->db->connection()->rollBack();
             throw new PostSaveException($ex->getMessage());
         }
     }
 
     public function remove(Post $post): void
     {
-        $this->db
-            ->table('post')
+        $this->db->connection()
+            ->table(self::TABLE)
             ->where('uuid', $post->id())
             ->delete();
     }

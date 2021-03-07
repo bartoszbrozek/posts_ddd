@@ -2,24 +2,33 @@
 
 namespace App\Presentation\UI\Web\Frontend\Http\Controllers;
 
-use App\Infrastructure\Component\MainPage\Post\PostService;
+use App\Component\Post\Port\Rest\CreatePostAction;
+use App\Component\Post\Port\Rest\GetAllPostsAction;
+use App\Shared\Infrastructure\Rest\ErrorResponse;
+use App\Shared\Infrastructure\Rest\SuccessResponse;
+use Exception;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(GetAllPostsAction $getAllPostsAction)
     {
-        $posts = ['test1', 'test2',];
-        return view('post/index', [
-            'posts' => $posts,
-        ]);
+        try {
+            $posts = $getAllPostsAction()->all();
+            return SuccessResponse::json($posts);
+        } catch (Exception $ex) {
+            return ErrorResponse::json($ex->getMessage());
+        }
     }
 
-    public function post(int $id, PostService $postService)
+    public function create(Request $request, CreatePostAction $createPostAction,)
     {
-        $post = $postService->findById($id);
-
-        return view('post/single_post', [
-            'post' => $post,
-        ]);
+        echo 2; die;
+        try {
+            $createPostAction($request, \Auth::user());
+            return SuccessResponse::json([]);
+        } catch (Exception $ex) {
+            return ErrorResponse::json($ex->getMessage());
+        }
     }
 }
