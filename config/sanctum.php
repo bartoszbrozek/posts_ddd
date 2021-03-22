@@ -54,6 +54,4 @@ return [
     ],
 
     'prefix' => 'api',
-    // 'guard' => 'api',
-
 ];
