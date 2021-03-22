@@ -1,9 +1,9 @@
 <template>
-  <div class="hello">Hello World</div>
+  <div class="register">Register component</div>
 </template>
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
 
-export default class Dashboard extends Vue {}
+export default class Register extends Vue {}
 </script>

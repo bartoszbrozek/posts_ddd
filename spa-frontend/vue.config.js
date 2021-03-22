@@ -5,6 +5,8 @@ module.exports = {
         devServer: {
             compress: true,
             disableHostCheck: true,
+            host: 'my-clusters.local',
+            port: '8080'
         }
     }
 }

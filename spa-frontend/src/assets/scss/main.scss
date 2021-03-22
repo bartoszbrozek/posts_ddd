@@ -1,0 +1,9 @@
+#app {
+    min-height: 100vh;
+}
+
+@import '@fortawesome/fontawesome-svg-core';
+@import "./variables";
+@import "../../../node_modules/bulma/bulma.sass";
+@import "./overrides";
+@import "./layouts/onboarding";
