@@ -5,12 +5,14 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-register_shutdown_function(function () {
-    $error = error_get_last();
-    if ($error['type'] === E_ERROR) {
-        dd($error);
-    }
-});
+// register_shutdown_function(function () {
+//     $error = error_get_last();
+//     if ($error && $error['type'] === E_ERROR) {
+//         dd($error);
+//     }
+
+//     dd (err);
+// });
 
 /*
 |--------------------------------------------------------------------------

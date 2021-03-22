@@ -15,18 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('')->group(function () {
-    Route::middleware('auth:api')->get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-    Route::get(
-        '/posts',
-        [PostController::class, 'index',],
-    )->name('post.index');
-
-    Route::middleware('auth:api')->post(
-        '/posts',
-        [PostController::class, 'create',],
-    )->name('post.create');
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
+
+Route::middleware('auth:sanctum')->post(
+    '/posts',
+    [PostController::class, 'create',],
+)->name('post.create');
+
+Route::get(
+    '/posts',
+    [PostController::class, 'index',],
+)->name('post.index');

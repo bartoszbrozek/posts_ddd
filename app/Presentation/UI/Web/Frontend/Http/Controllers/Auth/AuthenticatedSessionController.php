@@ -7,6 +7,7 @@ use App\Presentation\UI\Web\Frontend\Http\Requests\Auth\LoginRequest;
 use App\Presentation\UI\Web\Frontend\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,11 +29,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        $request->validate([
+            'email' => ['required'],
+            'password' => ['required']
+        ]);
 
-        $request->session()->regenerate();
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $request->session()->regenerate();
+            return response()->json(Auth::user(), 200);
+        }
 
-        return redirect(RouteServiceProvider::HOME);
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.']
+        ]);
     }
 
     /**
