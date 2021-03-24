@@ -2,7 +2,7 @@ import axios from "@/app/http/axios";
 import Cookies from 'js-cookie'
 
 export default class Csrf {
-    getCookie() {
+    getCookie(): Promise<unknown> {
         const token = Cookies.get("XSRF-TOKEN");
 
         if (token) {

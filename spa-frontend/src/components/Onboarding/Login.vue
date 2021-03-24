@@ -10,7 +10,12 @@
               <div class="field">
                 <label class="label">Email</label>
                 <div class="control has-icons-left has-icons-right">
-                  <input class="input" type="email" placeholder="Email" />
+                  <input
+                    class="input"
+                    type="email"
+                    placeholder="Email"
+                    v-model="email"
+                  />
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -24,7 +29,12 @@
               <div class="field">
                 <label class="label">Password</label>
                 <div class="control has-icons-left has-icons-right">
-                  <input class="input" type="password" placeholder="Password" />
+                  <input
+                    class="input"
+                    type="password"
+                    placeholder="Password"
+                    v-model="password"
+                  />
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -41,7 +51,13 @@
                 <div class="control">
                   <button class="button is-link is-light">Cancel</button>
                 </div>
-                <button class="button is-link is-fullwidth mr-3">Login</button>
+                <button
+                  class="button is-link is-fullwidth mr-3"
+                  :class="{ 'is-loading': isTryingToLogIn  }"
+                  @click="login()"
+                >
+                  Login
+                </button>
               </div>
             </div>
           </div>
@@ -67,9 +83,22 @@ import { Vue } from "vue-class-component";
 import store from "@/store";
 
 export default class Login extends Vue {
+  email = "";
+  password = "";
+
   changePage(): void {
     store.commit("onboarding/CHANGE_PAGE");
   }
 
+  login(): void {
+    store.dispatch("onboarding/login", {
+      email: this.email,
+      password: this.password,
+    });
+  }
+
+  get isTryingToLogIn(): boolean {
+    return store.getters["onboarding/isTryingToLogIn"];
+  }
 }
 </script>
