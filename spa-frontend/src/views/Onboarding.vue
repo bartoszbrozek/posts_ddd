@@ -2,9 +2,6 @@
   <div class="onboarding">
     <h2>Onboarding</h2>
 
-    <button @click="showLogin()">Set login</button>
-    <button @click="showRegister()">Set Register</button>
-
     <keep-alive>
       <transition name="component-fade" mode="out-in">
         <component v-bind:is="currentComponent" />
@@ -18,6 +15,7 @@ import { Component } from "@vue/runtime-core";
 import { Vue, Options } from "vue-class-component";
 import Login from "../components/Onboarding/Login.vue";
 import Register from "../components/Onboarding/Register.vue";
+import store from "@/store";
 
 @Options({
   components: {
@@ -28,16 +26,8 @@ import Register from "../components/Onboarding/Register.vue";
 export default class Onboarding extends Vue {
   actualComponent = "login";
 
-  showLogin(): void {
-    this.actualComponent = "login";
-  }
-
-  showRegister(): void {
-    this.actualComponent = "register";
-  }
-
   get currentComponent(): Component {
-    switch (this.actualComponent) {
+    switch (store.getters["onboarding/getCurrentPage"]) {
       case "login":
         return Login;
 
