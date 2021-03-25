@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import onboarding from '@/store/modules/onboarding'
+import messages from '@/store/modules/messages'
 
 export default createStore({
   state: {
@@ -9,6 +10,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    onboarding
+    onboarding,
+    messages
   }
 })
