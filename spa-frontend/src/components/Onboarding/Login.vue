@@ -53,7 +53,7 @@
                 </div>
                 <button
                   class="button is-link is-fullwidth mr-3"
-                  :class="{ 'is-loading': isTryingToLogIn  }"
+                  :class="{ 'is-loading': isTryingToLogIn }"
                   @click="login()"
                 >
                   Login
@@ -81,20 +81,33 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import store from "@/store";
+import MessageDispatcher from "@/app/components/message/message-dispatcher";
 
 export default class Login extends Vue {
   email = "";
   password = "";
+  messageDispatcher!: MessageDispatcher;
+
+  mounted() {
+    this.messageDispatcher = new MessageDispatcher(store);
+  }
 
   changePage(): void {
     store.commit("onboarding/CHANGE_PAGE");
   }
 
   login(): void {
-    store.dispatch("onboarding/login", {
-      email: this.email,
-      password: this.password,
-    });
+    store
+      .dispatch("onboarding/login", {
+        email: this.email,
+        password: this.password,
+      })
+      .then(() => {
+        this.messageDispatcher.success("Logged In!");
+      })
+      .catch(() => {
+        this.messageDispatcher.error("Could not log in");
+      });
   }
 
   get isTryingToLogIn(): boolean {

@@ -11,8 +11,7 @@ const getters = {
 }
 
 const actions = {
-    addMessage(v: any, message: MessageDTO) {
-        console.log(v)
+    add(v: any, message: MessageDTO) {
         v.state.messages.push(message)
 
         setTimeout(function () {
@@ -22,8 +21,15 @@ const actions = {
 
             v.commit("SET_MESSAGES", messages)
         }, message.getTimeout())
-    }
+    },
 
+    close(v: any, uuid: string) {
+        const messages = v.state.messages.filter((e: MessageDTO) => {
+            return e.getUuid() != uuid;
+        })
+
+        v.commit("SET_MESSAGES", messages)
+    }
 }
 
 const mutations = {

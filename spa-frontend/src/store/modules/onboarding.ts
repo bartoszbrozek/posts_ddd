@@ -1,4 +1,5 @@
 import User from '@/app/api/user'
+import { AxiosResponse } from 'axios'
 
 const user = new User
 
@@ -23,16 +24,16 @@ const getters = {
 }
 
 const actions = {
-    login(v: any, form: object): void {
+    login(v: any, form: object): Promise<AxiosResponse<any>> {
         v.commit('SET_IS_TRYING_TO_LOG_IN', true)
-        user.login(form).finally(() => {
+        return user.login(form).finally(() => {
             v.commit('SET_IS_TRYING_TO_LOG_IN', false)
         })
     },
 
-    register(v: any, form: object): void {
+    register(v: any, form: object): Promise<AxiosResponse<any>> {
         v.commit('SET_IS_TRYING_TO_REGISTER', true)
-        user.register(form).finally(() => {
+        return user.register(form).finally(() => {
             v.commit('SET_IS_TRYING_TO_REGISTER', false)
         })
     }
