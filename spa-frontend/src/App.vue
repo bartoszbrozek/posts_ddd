@@ -3,9 +3,11 @@
     <Navbar />
 
     <div class="container mt-6">
-      <transition name="component-fade" mode="out-in">
-        <router-view />
-      </transition>
+      <section class="section">
+        <transition name="component-fade" mode="out-in">
+          <router-view />
+        </transition>
+      </section>
     </div>
 
     <Messages />

@@ -1,17 +1,15 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <div class="content">
-        <h1>Posts</h1>
-      </div>
-      <SinglePost
-        v-for="(post, key) in posts"
-        :key="key"
-        :post="post"
-        class="mb-5"
-      />
+  <div class="container">
+    <div class="content">
+      <h1>Posts</h1>
     </div>
-  </section>
+    <SinglePost
+      v-for="(post, key) in posts"
+      :key="key"
+      :post="post"
+      class="mb-5"
+    />
+  </div>
 </template>
 
 <script lang="ts">
