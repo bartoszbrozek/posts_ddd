@@ -35,6 +35,10 @@
               >Login / Sign Up</router-link
             >
           </div>
+
+          <div class="buttons" v-else>
+            <a class="button is-light" @click="logout()">Logout</a>
+          </div>
         </div>
       </div>
     </div>
@@ -55,6 +59,10 @@ export default class Navbar extends Vue {
 
   isLoggedIn(): boolean {
     return this.user?.isLoggedIn();
+  }
+
+  logout(): void {
+    this.user.logout();
   }
 }
 </script>

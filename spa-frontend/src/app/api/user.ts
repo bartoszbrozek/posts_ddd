@@ -28,7 +28,14 @@ export default class User {
     async logout(): Promise<AxiosResponse<any>> {
         await this.csrf.getCookie();
 
-        return axios.post("/logout");
+        const response = axios.post("/logout");
+
+        response.then(() => {
+            store.commit("user/SET_IS_LOGGED_IN", false)
+            router.push('/onboarding')
+        })
+
+        return response;
     }
 
     auth(): Promise<AxiosResponse<any>> {
