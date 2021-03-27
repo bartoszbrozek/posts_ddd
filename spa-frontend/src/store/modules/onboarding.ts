@@ -1,4 +1,5 @@
 import User from '@/app/api/user'
+import UserDTO from "@/app/components/user/userdto"
 import { AxiosResponse } from 'axios'
 
 const user = new User
@@ -26,9 +27,19 @@ const getters = {
 const actions = {
     login(v: any, form: object): Promise<AxiosResponse<any>> {
         v.commit('SET_IS_TRYING_TO_LOG_IN', true)
-        return user.login(form).finally(() => {
-            v.commit('SET_IS_TRYING_TO_LOG_IN', false)
-        })
+        return user.login(form)
+            .then((response: AxiosResponse<any>) => {
+                const userdto = new UserDTO(response.data.name, response.data.email);
+
+                v.commit('user/SET_USER', userdto, { root: true })
+                v.commit('user/SET_IS_LOGGED_IN', true, { root: true })
+
+                return response;
+            })
+
+            .finally(() => {
+                v.commit('SET_IS_TRYING_TO_LOG_IN', false)
+            })
     },
 
     register(v: any, form: object): Promise<AxiosResponse<any>> {

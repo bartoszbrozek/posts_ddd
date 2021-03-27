@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- <router-link to="/">Dashboard</router-link> |
-    <router-link to="/onboarding">Login</router-link> -->
+    <Navbar />
     <router-view />
 
     <Messages />
@@ -11,10 +10,12 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import Messages from "@/components/Message/Messages.vue";
+import Navbar from "@/components/Nav/Navbar.vue";
 
 @Options({
   components: {
     Messages,
+    Navbar,
   },
 })
 export default class App extends Vue {}

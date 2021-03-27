@@ -1,6 +1,8 @@
 import axios from "@/app/http/axios";
 import Csrf from "@/app/api/csrf"
 import { AxiosResponse } from "axios";
+import router from "@/router"
+import store from "@/store"
 
 export default class User {
     csrf = new Csrf
@@ -14,7 +16,13 @@ export default class User {
     async login(form: object): Promise<AxiosResponse<any>> {
         await this.csrf.getCookie();
 
-        return axios.post("/login", form);
+        const response = axios.post("/login", form)
+
+        response.then(() => {
+            router.push('/')
+        })
+
+        return response
     }
 
     async logout(): Promise<AxiosResponse<any>> {
@@ -25,5 +33,9 @@ export default class User {
 
     auth(): Promise<AxiosResponse<any>> {
         return axios.get("/user");
+    }
+
+    isLoggedIn(): boolean {
+        return store.getters['user/isLoggedIn']
     }
 }

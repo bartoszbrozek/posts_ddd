@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import router from "@/router"
 
-export default axios.create({
+const axiosInstance = axios.create({
     baseURL: "http://my-clusters.local/api/",
     withCredentials: true,
     headers: {
@@ -8,3 +9,16 @@ export default axios.create({
         "X-Requested-With": "XMLHttpRequest"
     }
 });
+
+axiosInstance.interceptors.response.use((response: AxiosResponse<any>) => {
+    return response
+}, (error: any) => {
+    if ([401, 403].includes(error.response.status)) {
+        localStorage.setItem('isAuthorized', '0')
+        router.push("/onboarding")
+    }
+
+    return Promise.reject(error)
+})
+
+export default axiosInstance
