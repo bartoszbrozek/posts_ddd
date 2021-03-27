@@ -6,5 +6,7 @@
 @import "./variables";
 @import "../../../node_modules/bulma/bulma.sass";
 @import "./overrides";
+@import "./components/common";
 @import "./layouts/onboarding";
 @import "./components/message";
+@import "./components/post";

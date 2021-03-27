@@ -3,6 +3,7 @@ import onboarding from '@/store/modules/onboarding'
 import messages from '@/store/modules/messages'
 import user from '@/store/modules/user'
 import navbar from '@/store/modules/navbar'
+import posts from '@/store/modules/posts'
 import VuexPersistence from 'vuex-persist'
 import { restoreTyping, isEmpty } from '@/store/restore'
 
@@ -36,6 +37,7 @@ export default createStore({
     messages,
     user,
     navbar,
+    posts,
   },
   plugins: [
     vuexLocal.plugin

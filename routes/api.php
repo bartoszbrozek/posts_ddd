@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->post(
     [PostController::class, 'create',],
 )->name('post.create');
 
-Route::get(
-    '/posts',
-    [PostController::class, 'index',],
-)->name('post.index');
+Route::middleware('auth:sanctum')->get(
+    '/posts/paginate/{number}',
+    [PostController::class, 'paginate',],
+)->name('post.paginate');

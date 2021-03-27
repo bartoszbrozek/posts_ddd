@@ -21,9 +21,18 @@ class PostController extends Controller
         }
     }
 
+    public function paginate(GetAllPostsAction $getAllPostsAction, int $number)
+    {
+        try {
+            $posts = $getAllPostsAction()->all();
+            return SuccessResponse::json($posts);
+        } catch (Exception $ex) {
+            return ErrorResponse::json($ex->getMessage());
+        }
+    }
+
     public function create(Request $request, CreatePostAction $createPostAction,)
     {
-        echo 2; die;
         try {
             $createPostAction($request, \Auth::user());
             return SuccessResponse::json([]);
