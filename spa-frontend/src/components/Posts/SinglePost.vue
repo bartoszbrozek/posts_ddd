@@ -5,7 +5,10 @@
         <h1 class="card-header-title mb-0">
           {{ post.getTitle() }} <span> - by Paolcia</span>
         </h1>
-        <button class="button h-auto is-success">+</button>
+        <div class="up-downvote-container">
+          <button class="button h-auto is-success" @click="upvote(post.getUuid())">+</button>
+          <button class="button h-auto is-danger" @click="downvote()">-</button>
+        </div>
       </header>
       <div class="card-content">
         <div class="content">
@@ -29,5 +32,13 @@ import PostDTO from "@/app/components/post/postdto";
 export default class SinglePost extends Vue {
   @Prop({ type: PostDTO, required: true })
   post!: SinglePost;
+
+  upvote(uuid: string): void {
+    console.log("UPVOTE", uuid);
+  }
+
+  downvote(): void {
+    console.log("DOWNVOTE");
+  }
 }
 </script>

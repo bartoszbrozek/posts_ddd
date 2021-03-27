@@ -8,6 +8,16 @@
                     color: gray;
                 }
             }
+
+            .up-downvote-container {
+                display: flex;
+                flex-direction: column;
+
+                button {
+                    padding-top: calc(0.25em - 1px);
+                    padding-bottom: calc(0.25em - 1px);
+                }
+            }
         }
     }
 }
