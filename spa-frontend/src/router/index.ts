@@ -14,6 +14,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Onboarding',
     component: () => import('../views/Onboarding.vue'),
     meta: { authRequired: false },
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About.vue'),
+    meta: { authRequired: true },
   }
 ]
 

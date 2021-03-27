@@ -1,7 +1,5 @@
 <template>
   <div class="onboarding">
-    <h2>Onboarding</h2>
-
     <keep-alive>
       <transition name="component-fade" mode="out-in">
         <component v-bind:is="currentComponent" />

@@ -1,7 +1,12 @@
 <template>
   <div>
     <Navbar />
-    <router-view />
+
+    <div class="container mt-6">
+      <transition name="component-fade" mode="out-in">
+        <router-view />
+      </transition>
+    </div>
 
     <Messages />
   </div>
@@ -20,3 +25,15 @@ import Navbar from "@/components/Nav/Navbar.vue";
 })
 export default class App extends Vue {}
 </script>
+
+<style scoped>
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.component-fade-enter-from,
+.component-fade-leave-to {
+  opacity: 0;
+}
+</style>

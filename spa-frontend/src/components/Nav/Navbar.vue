@@ -1,13 +1,18 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar is-fixed-top"
+    role="navigation"
+    aria-label="main navigation"
+    v-show="isLoggedIn()"
+  >
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
+      <router-link to="/" class="navbar-item" href="https://bulma.io">
         <img
           src="https://bulma.io/images/bulma-logo.png"
           width="112"
           height="28"
         />
-      </a>
+      </router-link>
 
       <a
         role="button"
@@ -15,6 +20,8 @@
         aria-label="menu"
         aria-expanded="false"
         data-target="main-navbar"
+        @click="toggleMobileNavbar()"
+        :class="{ 'is-active': this.isMobileNavbarOn }"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -22,7 +29,11 @@
       </a>
     </div>
 
-    <div id="main-navbar" class="navbar-menu">
+    <div
+      id="main-navbar"
+      class="navbar-menu"
+      :class="{ 'is-active': this.isMobileNavbarOn }"
+    >
       <div class="navbar-start">
         <router-link to="/" class="navbar-item">Dashboard</router-link>
         <router-link to="/about" class="navbar-item">About</router-link>
@@ -47,11 +58,11 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
-import store from "@/store";
 import User from "@/app/api/user";
+import store from "@/store";
 
 export default class Navbar extends Vue {
-  user!: User;
+  private user!: User;
 
   created() {
     this.user = new User();
@@ -63,6 +74,14 @@ export default class Navbar extends Vue {
 
   logout(): void {
     this.user.logout();
+  }
+
+  toggleMobileNavbar(): void {
+    store.commit("navbar/TOGGLE_NAVBAR");
+  }
+
+  get isMobileNavbarOn(): boolean {
+    return store.getters["navbar/isMobileNavbarOn"];
   }
 }
 </script>
