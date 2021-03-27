@@ -113,7 +113,7 @@ export default class Register extends Vue {
   register(): void {
     store.dispatch("onboarding/register", {
       email: this.email,
-      username: this.username,
+      name: this.username,
       password: this.password,
     });
   }

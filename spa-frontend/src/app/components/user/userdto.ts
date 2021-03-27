@@ -1,14 +1,16 @@
+import Restore from '@/store/restore'
+@Restore()
 export default class UserDTO {
-    private name: string;
+    private username: string;
     private email: string;
 
-    constructor(name: string, email: string) {
-        this.name = name;
+    constructor(username: string, email: string) {
+        this.username = username;
         this.email = email;
     }
 
     getName(): string {
-        return this.name
+        return this.username
     }
 
     getEmail(): string {

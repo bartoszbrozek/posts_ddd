@@ -9,8 +9,8 @@ const getters = {
     isLoggedIn: (state: any): boolean => {
         return state.isLoggedIn
     },
-    user: (state: any): UserDTO | null => {
-        return state.user
+    user: (state: any): UserDTO => {
+        return new UserDTO(state.user.username, state.user.email)
     }
 }
 

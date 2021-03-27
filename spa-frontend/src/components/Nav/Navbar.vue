@@ -40,6 +40,9 @@
       </div>
 
       <div class="navbar-end">
+        <div class="navbar-item" v-if="isLoggedIn()">
+          Welcome,&nbsp;<span v-html="userData.getName()"></span>
+        </div>
         <div class="navbar-item">
           <div class="buttons" v-if="!isLoggedIn()">
             <router-link to="/onboarding" class="button is-light"
@@ -60,6 +63,7 @@
 import { Vue } from "vue-class-component";
 import User from "@/app/api/user";
 import store from "@/store";
+import UserDTO from "@/app/components/user/userdto";
 
 export default class Navbar extends Vue {
   private user!: User;
@@ -82,6 +86,10 @@ export default class Navbar extends Vue {
 
   get isMobileNavbarOn(): boolean {
     return store.getters["navbar/isMobileNavbarOn"];
+  }
+
+  get userData(): UserDTO {
+    return store.getters["user/user"];
   }
 }
 </script>
