@@ -32,7 +32,7 @@
       <h3>Tags</h3>
       <div class="field has-addons">
         <div class="control">
-          <input class="input" type="text" v-model="tagTitle" />
+          <input class="input" type="text" placeholder="Use comma as tag separator" v-model="tagTitle" />
         </div>
         <div class="control">
           <a class="button is-success" @click="addTag(tagTitle)"> Add Tag </a>
@@ -98,12 +98,17 @@ export default defineComponent({
     },
 
     addTag(title: string): void {
-      const tmpTitle = title.trim();
-      if (tmpTitle.length <= 0) {
-        return;
-      }
+      const titles = title.split(",");
 
-      this.tags.push(new TagDTO(title));
+      titles.forEach((eTitle: string) => {
+        const tmpTitle = eTitle.trim();
+        if (tmpTitle.length <= 0) {
+          return;
+        }
+
+        this.tags.push(new TagDTO(tmpTitle));
+      });
+
       this.tagTitle = "";
     },
 
