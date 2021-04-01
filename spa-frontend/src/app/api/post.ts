@@ -15,6 +15,6 @@ export default class Post {
     async add(newPost: NewPostDTO): Promise<AxiosResponse<any>> {
         await this.csrf.getCookie();
 
-        return axios.post(`/posts/create`, newPost);
+        return axios.post(`/posts`, newPost);
     }
 }

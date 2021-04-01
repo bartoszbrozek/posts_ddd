@@ -1,0 +1,14 @@
+.create-post {
+    .tags-container {
+        display: flex;
+        align-items: flex-start;
+
+        .tags:last-child {
+            margin-bottom: 1rem;
+        }
+
+        .tags {
+            margin-right: 1rem;
+        }
+    }
+}

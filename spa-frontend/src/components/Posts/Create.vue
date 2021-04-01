@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container create-post">
     <div class="content">
       <h1>Create Post</h1>
 
@@ -29,6 +29,23 @@
         </div>
       </div>
 
+      <h3>Tags</h3>
+      <div class="field has-addons">
+        <div class="control">
+          <input class="input" type="text" v-model="tagTitle" />
+        </div>
+        <div class="control">
+          <a class="button is-success" @click="addTag(tagTitle)"> Add Tag </a>
+        </div>
+      </div>
+
+      <div class="tags-container">
+        <div class="tags has-addons" v-for="(tag, key) in tags" :key="key">
+          <span class="tag is-danger">{{ tag.getTitle() }}</span>
+          <a class="tag is-delete" @click="removeTag(tag)"></a>
+        </div>
+      </div>
+
       <div class="field">
         <div class="field-label">
           <!-- Left empty for spacing -->
@@ -48,32 +65,53 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import TagDTO from "@/app/components/post/tag";
 import NewPostDTO from "@/app/components/post/new-postdto";
 import store from "@/store";
+import { defineComponent } from "vue";
 
-@Options({
-  components: {},
-})
-export default class Create extends Vue {
-  title!: string;
-  link!: string;
-  content!: string;
+export default defineComponent({
+  data() {
+    return {
+      editor: {} as ClassicEditor,
+      editorConfig: {},
 
+      title: "",
+      link: "",
+      content: "",
+      tagTitle: "",
+      tags: [] as TagDTO[],
+    };
+  },
   created() {
     this.editor = ClassicEditor;
     this.editorConfig = {};
-  }
+    this.tags = [];
+  },
+  methods: {
+    createPost(): void {
+      store.dispatch(
+        "posts/add",
+        new NewPostDTO(this.title, this.link, this.content, this.tags)
+      );
+    },
 
-  editor!: ClassicEditor;
-  editorConfig!: {};
+    addTag(title: string): void {
+      const tmpTitle = title.trim();
+      if (tmpTitle.length <= 0) {
+        return;
+      }
 
-  createPost(): void {
-    store.dispatch(
-      "posts/add",
-      new NewPostDTO(this.title, this.link, this.content)
-    );
-  }
-}
+      this.tags.push(new TagDTO(title));
+      this.tagTitle = "";
+    },
+
+    removeTag(tag: TagDTO): void {
+      this.tags = this.tags.filter((e: TagDTO) => {
+        return e.getUuid() !== tag.getUuid();
+      });
+    },
+  },
+});
 </script>
