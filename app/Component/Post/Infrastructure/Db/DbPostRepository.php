@@ -32,7 +32,6 @@ final class DbPostRepository implements PostRepository
             ->table(self::TABLE)
             ->join('users AS u', 'u.id', '=', self::TABLE . '.user_id')
             ->get([
-                self::TABLE . '.uuid',
                 self::TABLE . '.title',
                 self::TABLE . '.link',
                 self::TABLE . '.content',

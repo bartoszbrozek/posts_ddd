@@ -1,4 +1,5 @@
 import Post from "@/app/api/post"
+import NewPostDTO from "@/app/components/post/new-postdto"
 import PostDTO from "@/app/components/post/postdto"
 import { AxiosResponse } from "axios"
 
@@ -35,6 +36,12 @@ const actions = {
         })
 
     },
+
+    add(v: any, newPost: NewPostDTO) {
+        const post = new Post
+
+        post.add(newPost)
+    }
 }
 
 const mutations = {

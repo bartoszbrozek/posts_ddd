@@ -16,6 +16,16 @@
                 button {
                     padding-top: calc(0.25em - 1px);
                     padding-bottom: calc(0.25em - 1px);
+                    border-width: 0px;
+
+                    svg {
+                        margin-right: auto;
+                    }
+
+                    span.number-of-downvotes,
+                    span.number-of-upvotes {
+                        margin-left: 2px;
+                    }
                 }
             }
         }

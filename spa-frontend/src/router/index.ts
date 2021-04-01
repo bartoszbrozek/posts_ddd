@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
+import CreatePost from '../views/CreatePost.vue'
 import User from '@/app/api/user'
 
 const routes: Array<RouteRecordRaw> = [
@@ -7,6 +8,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: { authRequired: true },
+  },
+  {
+    path: '/post/create',
+    name: 'CreatePost',
+    component: CreatePost,
     meta: { authRequired: true },
   },
   {

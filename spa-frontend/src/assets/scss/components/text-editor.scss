@@ -1,0 +1,11 @@
+:root {
+    --color: black;
+}
+
+.ck-editor {
+    color: var(--color);
+}
+
+.ck-editor__editable {
+    min-height: 500px;
+}

@@ -14,8 +14,7 @@ class Post extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('uuid')->index()->unique();
+            $table->uuid('id')->primary();
             $table->string('title');
             $table->string('link');
             $table->text('content');

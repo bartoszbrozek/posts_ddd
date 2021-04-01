@@ -36,6 +36,7 @@
     >
       <div class="navbar-start">
         <router-link to="/" class="navbar-item">Dashboard</router-link>
+        <router-link to="/post/create" class="navbar-item">Create Post</router-link>
         <router-link to="/about" class="navbar-item">About</router-link>
       </div>
 
