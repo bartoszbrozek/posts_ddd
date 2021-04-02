@@ -1,6 +1,7 @@
 .create-post {
     .tags-container {
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-start;
 
         .tags:last-child {
@@ -9,6 +10,12 @@
 
         .tags {
             margin-right: 1rem;
+        }
+    }
+
+    .main-buttons-container {
+        button {
+            width: 50%;
         }
     }
 }
