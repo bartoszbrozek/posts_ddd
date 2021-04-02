@@ -2,10 +2,27 @@
     --color: black;
 }
 
-.ck-editor {
-    color: var(--color);
-}
+.content-editor {
+    .ck-editor,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong {
+        color: var(--color) !important;
+    }
 
-.ck-editor__editable {
-    min-height: 500px;
+    a {
+        color: #3298dc;
+    }
+
+    blockquote {
+        color: white;
+    }
+
+    .ck-editor__editable {
+        min-height: 500px;
+    }
 }

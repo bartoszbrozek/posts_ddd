@@ -1,83 +1,106 @@
 <template>
   <div class="container create-post">
-    <div class="content">
-      <h1>Create Post</h1>
-      <div class="columns">
-        <div class="column is-three-quarters">
-          <div class="field">
-            <label class="label">Title</label>
-            <div class="control">
-              <input class="input" type="text" v-model="title" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Link</label>
-            <div class="control">
-              <input class="input" type="text" v-model="link" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Content</label>
-            <div class="control">
-              <ckeditor
-                :editor="editor"
-                :config="editorConfig"
-                tag-name="textarea"
-                v-model="content"
-              ></ckeditor>
-            </div>
-          </div>
+    <VeeForm
+      v-slot="{ handleSubmit }"
+      :validation-schema="validationSchema"
+      as="div"
+    >
+      <form @submit.prevent="handleSubmit($event, onSubmit)">
+        <div class="content">
+          <h1>Create Post</h1>
         </div>
-
-        <div class="column">
-          <label class="label">Content</label>
-          <div class="field has-addons">
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                placeholder="Use comma as tag separator"
-                v-model="tagTitle"
-              />
+        <div class="columns">
+          <div class="column is-three-quarters">
+            <div class="field">
+              <label class="label">Title</label>
+              <div class="control">
+                <Field class="input" type="text" name="title" v-model="title" />
+                <ErrorMessage name="title" class="tag is-danger is-light" />
+              </div>
             </div>
-            <div class="control">
-              <a class="button is-success" @click="addTag(tagTitle)">
-                Add Tag
-              </a>
+
+            <div class="field">
+              <label class="label">Link</label>
+              <div class="control">
+                <input class="input" type="text" v-model="link" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Content</label>
+              <div class="control">
+                <div class="content content-editor">
+                  <ckeditor
+                    :editor="editor"
+                    :config="editorConfig"
+                    tag-name="textarea"
+                    v-model="content"
+                    name="content"
+                    @blur="validateContent()"
+                  ></ckeditor>
+                  <span
+                    role="alert"
+                    class="tag is-danger is-light"
+                    v-show="showContentError"
+                    >Please fill content</span
+                  >
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="tags-container">
-            <div class="tags has-addons" v-for="(tag, key) in tags" :key="key">
-              <span class="tag is-danger">{{ tag.getTitle() }}</span>
-              <a class="tag is-delete" @click="removeTag(tag)"></a>
+          <div class="column">
+            <label class="label">Tags</label>
+            <div class="field has-addons">
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Use comma as tag separator"
+                  v-model="tagTitle"
+                />
+              </div>
+              <div class="control">
+                <a class="button is-info" @click="addTag(tagTitle)">
+                  Add Tag
+                </a>
+              </div>
             </div>
-          </div>
 
-          <div class="field main-buttons-container">
-            <div class="field-label">
-              <!-- Left empty for spacing -->
+            <div class="tags-container">
+              <div
+                class="tags has-addons"
+                v-for="(tag, key) in tags"
+                :key="key"
+              >
+                <span class="tag is-danger">{{ tag.getTitle() }}</span>
+                <a class="tag is-delete" @click="removeTag(tag)"></a>
+              </div>
             </div>
-            <div class="field-body">
-              <div class="field">
-                <label class="label">&nbsp;</label>
 
-                <div class="control">
-                  <div class="buttons has-addons">
-                    <button class="button">Cancel</button>
-                    <button class="button is-success" @click="createPost()">
-                      Create Post
-                    </button>
+            <div class="field main-buttons-container">
+              <div class="field-label">
+                <!-- Left empty for spacing -->
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <label class="label">&nbsp;</label>
+
+                  <div class="control">
+                    <div class="buttons has-addons">
+                      <button class="button">Cancel</button>
+                      <button type="submit" class="button is-success">
+                        Create Post
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </VeeForm>
   </div>
 </template>
 
@@ -87,8 +110,15 @@ import TagDTO from "@/app/components/post/tag";
 import NewPostDTO from "@/app/components/post/new-postdto";
 import store from "@/store";
 import { defineComponent } from "vue";
+import { Field, Form as VeeForm, ErrorMessage } from "vee-validate";
+import * as yup from "yup";
 
 export default defineComponent({
+  components: {
+    Field,
+    VeeForm,
+    ErrorMessage,
+  },
   data() {
     return {
       editor: {} as ClassicEditor,
@@ -99,6 +129,12 @@ export default defineComponent({
       content: "",
       tagTitle: "",
       tags: [] as TagDTO[],
+
+      validationSchema: yup.object({
+        title: yup.string().required().min(3),
+        content: yup.string().required().min(1),
+      }),
+      showContentError: false,
     };
   },
   created() {
@@ -107,6 +143,20 @@ export default defineComponent({
     this.tags = [];
   },
   methods: {
+    onSubmit() {
+      if (!this.showContentError) {
+        this.createPost();
+      }
+    },
+
+    validateContent(): void {
+      this.validationSchema.fields.content
+        .isValid(this.content)
+        .then((isValid: boolean) => {
+          this.showContentError = !isValid;
+        });
+    },
+
     createPost(): void {
       store.dispatch(
         "posts/add",
