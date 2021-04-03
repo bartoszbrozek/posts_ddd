@@ -11,6 +11,9 @@ const axiosInstance = axios.create({
     }
 });
 
+axiosInstance.defaults.params = {}
+axiosInstance.defaults.params['XDEBUG_SESSION_START'] = 'VSCODE';
+
 axiosInstance.interceptors.response.use((response: AxiosResponse<any>) => {
     return response
 }, (error: any) => {
