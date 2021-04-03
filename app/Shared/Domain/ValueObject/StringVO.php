@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Shared\Domain;
+namespace App\Shared\Domain\ValueObject;
 
 use Stringable;
 
 abstract class StringVO implements Stringable
 {
-    public function __construct(protected string $value)
+    public function __construct(private string $value)
     {
     }
 

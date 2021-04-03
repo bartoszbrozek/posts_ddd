@@ -4,7 +4,10 @@ namespace App\Component\Post\Port\Rest;
 
 use App\Component\Post\Application\Command\CreatePost;
 use App\Component\Post\Application\PostService;
-use App\Shared\Infrastructure\User;
+use App\Component\Post\Domain\ValueObject\PostContent;
+use App\Component\Post\Domain\ValueObject\PostLink;
+use App\Component\Post\Domain\ValueObject\PostTitle;
+use App\Shared\Infrastructure\Auth\User;
 use Symfony\Component\HttpFoundation\Request;
 
 class CreatePostAction
@@ -17,9 +20,9 @@ class CreatePostAction
     public function __invoke(Request $request, User $user)
     {
         $command = new CreatePost(
-            $request->get('content'),
-            $request->get('title'),
-            $request->get('link'),
+            new PostContent($request->get('content')),
+            new PostTitle($request->get('title')),
+            new PostLink($request->get('link')),
             $request->get('tags'),
         );
 

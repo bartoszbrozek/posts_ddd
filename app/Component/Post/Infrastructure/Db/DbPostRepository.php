@@ -80,7 +80,7 @@ final class DbPostRepository implements PostRepository
             $this->db->connection()
                 ->table(self::TABLE)
                 ->insert([
-                    'uuid' => $data['uuid'],
+                    'id' => $data['id'],
                     'title' => $data['title'],
                     'link' => $data['link'],
                     'content' => $data['content'],
@@ -93,7 +93,7 @@ final class DbPostRepository implements PostRepository
                 $this->db->connection()
                     ->table('tag')
                     ->insert([
-                        'uuid' => $tagData['uuid'],
+                        'id' => $tagData['id'],
                         'value' => $tagData['value'],
                     ]);
             }

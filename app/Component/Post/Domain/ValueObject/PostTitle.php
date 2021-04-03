@@ -2,7 +2,7 @@
 
 namespace App\Component\Post\Domain\ValueObject;
 
-use App\Shared\Domain\StringVO;
+use App\Shared\Domain\ValueObject\StringVO;
 use InvalidArgumentException;
 
 class PostTitle extends StringVO

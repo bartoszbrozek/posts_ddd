@@ -7,7 +7,7 @@ use App\Component\Post\Domain\Post as PostAggregate;
 use App\Component\Post\Domain\Repository\PostRepository;
 use App\Component\Post\Domain\ValueObject\PostId;
 use App\Shared\Domain\DomainEventDispatcherInterface;
-use App\Shared\Infrastructure\User;
+use App\Shared\Infrastructure\Auth\User;
 
 class PostService
 {

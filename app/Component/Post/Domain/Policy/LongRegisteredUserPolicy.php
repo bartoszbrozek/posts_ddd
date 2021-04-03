@@ -2,8 +2,7 @@
 
 namespace App\Component\Post\Domain\Policy;
 
-use App\Shared\Domain\StringVO;
-use InvalidArgumentException;
+use App\Shared\Domain\ValueObject\StringVO;
 
 class LongRegisteredUserPolicy extends StringVO
 {

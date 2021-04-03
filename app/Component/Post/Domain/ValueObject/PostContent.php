@@ -2,10 +2,10 @@
 
 namespace App\Component\Post\Domain\ValueObject;
 
-use App\Shared\Domain\StringVO;
+use App\Shared\Domain\ValueObject\StringVO;
 use InvalidArgumentException;
 
-class PostContent extends StringVO
+final class PostContent extends StringVO
 {
     const MAX_LENGTH = 65535;
 

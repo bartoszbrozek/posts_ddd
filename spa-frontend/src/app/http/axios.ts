@@ -17,7 +17,7 @@ axiosInstance.interceptors.response.use((response: AxiosResponse<any>) => {
 
     if ([401, 403].includes(error.response.status)) {
         localStorage.setItem('vuex', '{}')
-        store.commit("SET_IS_LOGGED_IN", false)
+        store.commit("user/SET_IS_LOGGED_IN", false)
         router.push("/onboarding")
     }
 

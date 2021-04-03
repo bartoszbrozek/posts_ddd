@@ -12,7 +12,7 @@ use App\Component\Post\Domain\ValueObject\PostId;
 use App\Component\Post\Domain\ValueObject\PostLink;
 use App\Component\Post\Domain\ValueObject\PostTitle;
 use App\Shared\Domain\AggregateRoot;
-use App\Shared\Infrastructure\User;
+use App\Shared\Infrastructure\Auth\User;
 
 final class Post extends AggregateRoot
 {
@@ -23,7 +23,7 @@ final class Post extends AggregateRoot
         private PostTitle $postTitle,
         private PostLink $postLink,
         private PostContent $postContent,
-        private array $tags = [],
+        private array $tags,
         private User $user,
     ) {
     }
@@ -33,7 +33,7 @@ final class Post extends AggregateRoot
         PostTitle $postTitle,
         PostLink $postLink,
         PostContent $postContent,
-        array $tags = [],
+        array $tags,
         User $user,
     ): Post {
         return new self($id, $postTitle, $postLink, $postContent, $tags, $user,);
