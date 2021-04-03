@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 final class PostDTO implements Arrayable
 {
     public function __construct(
-        private string $uuid,
+        private string $id,
         private string $title,
         private string $link,
         private string $content,
@@ -18,9 +18,9 @@ final class PostDTO implements Arrayable
     ) {
     }
 
-    public function uuid(): string
+    public function id(): string
     {
-        return $this->uuid;
+        return $this->id;
     }
 
     public function title(): string

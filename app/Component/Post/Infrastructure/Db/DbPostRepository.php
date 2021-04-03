@@ -33,6 +33,7 @@ final class DbPostRepository implements PostRepository
             ->table(self::TABLE)
             ->join('users AS u', 'u.id', '=', self::TABLE . '.user_id')
             ->get([
+                self::TABLE . '.id',
                 self::TABLE . '.title',
                 self::TABLE . '.link',
                 self::TABLE . '.content',
@@ -63,7 +64,7 @@ final class DbPostRepository implements PostRepository
             ->first();
 
         return new Post(
-            new PostId($data['uuid']),
+            new PostId($data['id']),
             new PostTitle($data['title']),
             new PostLink($data['link']),
             new PostContent($data['content']),

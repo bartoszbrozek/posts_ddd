@@ -16,7 +16,7 @@ final class PostHydrator
     private function map(array $data): array
     {
         return [
-            'uuid' => $data['uuid'],
+            'id' => $data['id'],
             'title' => $data['title'],
             'link' => $data['link'],
             'content' => $data['content'],

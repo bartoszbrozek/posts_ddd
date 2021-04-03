@@ -17,9 +17,7 @@
         </div>
       </header>
       <div class="card-content">
-        <div class="content">
-          {{ post.getContent() }}
-        </div>
+        <div class="content" v-html="post.getContent()"></div>
       </div>
       <footer class="card-footer">
         <a href="#" class="card-footer-item">Show more...</a>
