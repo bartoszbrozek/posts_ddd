@@ -18,7 +18,7 @@ class Post extends Migration
             $table->string('title');
             $table->string('link');
             $table->text('content');
-            $table->foreignId('user_id');
+            $table->foreignUuid('user_id');
             $table->timestamps();
         });
     }

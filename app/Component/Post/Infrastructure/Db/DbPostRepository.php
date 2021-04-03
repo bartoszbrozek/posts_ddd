@@ -14,6 +14,7 @@ use App\Component\Post\Infrastructure\PostCollection;
 use App\Presentation\UI\Web\Frontend\Models\User;
 use App\Component\Tag\Domain\Tag;
 use App\Shared\Infrastructure\Db\DbConnection;
+use DateTimeImmutable;
 use Exception;
 
 final class DbPostRepository implements PostRepository
@@ -80,23 +81,25 @@ final class DbPostRepository implements PostRepository
             $this->db->connection()
                 ->table(self::TABLE)
                 ->insert([
-                    'id' => $data['id'],
-                    'title' => $data['title'],
-                    'link' => $data['link'],
-                    'content' => $data['content'],
+                    'id' => $data['id']->uuid(),
+                    'title' => $data['postTitle']->value(),
+                    'link' => $data['postLink']->value(),
+                    'content' => $data['postContent']->value(),
+                    'user_id' => $data['user']->id,
+                    'created_at' => new DateTimeImmutable(),
                 ]);
 
-            /** @var Tag $tag */
-            foreach ($data['tags'] as $tag) {
-                $tagData = $tag->toSnapshot();
+            // /** @var Tag $tag */
+            // foreach ($data['tags'] as $tag) {
+            //     $tagData = $tag->toSnapshot();
 
-                $this->db->connection()
-                    ->table('tag')
-                    ->insert([
-                        'id' => $tagData['id'],
-                        'value' => $tagData['value'],
-                    ]);
-            }
+            //     $this->db->connection()
+            //         ->table('tag')
+            //         ->insert([
+            //             'id' => $tagData['id'],
+            //             'value' => $tagData['value'],
+            //         ]);
+            // }
 
             $this->db->connection()->commit();
         } catch (Exception $ex) {

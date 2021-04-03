@@ -9,10 +9,12 @@ abstract class AggregateRoot
      */
     protected $events = [];
 
-    public function toSnapshot(): array
-    {
-        return get_object_vars($this) ?? [];
-    }
+    /**
+     * Return snapshot of aggregate
+     *
+     * @return array
+     */
+    abstract public function toSnapshot(): array;
 
     public function popEvents(): array
     {

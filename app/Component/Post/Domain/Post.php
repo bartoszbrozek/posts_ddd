@@ -85,4 +85,9 @@ final class Post extends AggregateRoot
 
         $this->raise(new PostUnpublished($this));
     }
+
+    public function toSnapshot(): array
+    {
+        return get_object_vars($this) ?? [];
+    }
 }

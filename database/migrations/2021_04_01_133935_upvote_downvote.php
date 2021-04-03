@@ -10,8 +10,8 @@ class UpvoteDownvote extends Migration
     {
         Schema::create('post_votes', function (Blueprint $table) {
             $table->id();
-            $table->string('user_uuid')->index();
-            $table->string('post_uuid')->index();
+            $table->uuid('user_uuid')->index();
+            $table->uuid('post_uuid')->index();
             $table->enum('type', ['upvote', 'downvote'])->index();
         });
     }
