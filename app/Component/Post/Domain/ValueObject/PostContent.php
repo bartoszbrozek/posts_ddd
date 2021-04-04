@@ -2,21 +2,21 @@
 
 namespace App\Component\Post\Domain\ValueObject;
 
-use App\Shared\Domain\ValueObject\StringVO;
+use App\Shared\Domain\Stringable;
 use InvalidArgumentException;
 
-final class PostContent extends StringVO
+final class PostContent
 {
-    const MIN_LENGTH = 3;
-    const MAX_LENGTH = 65535;
+    private const MIN_LENGTH = 3;
+    private const MAX_LENGTH = 65535;
+
+    use Stringable;
 
     public function __construct(private string $value)
     {
         // Validate max title length
-        if (strlen($value) > self::MAX_LENGTH || strlen($value) < self::MIN_LENGTH) {
-            return new InvalidArgumentException();
+        if (strlen($this->value) > self::MAX_LENGTH || strlen($this->value) < self::MIN_LENGTH) {
+            throw new InvalidArgumentException("Invalid content");
         }
-
-        parent::__construct($value);
     }
 }

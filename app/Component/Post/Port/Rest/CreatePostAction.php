@@ -20,9 +20,9 @@ class CreatePostAction
     public function __invoke(Request $request, User $user)
     {
         $command = new CreatePost(
-            new PostContent($request->get('content')),
-            new PostTitle($request->get('title')),
-            new PostLink($request->get('link')),
+            new PostContent((string)$request->get('content')),
+            new PostTitle((string)$request->get('title')),
+            new PostLink((string)$request->get('link')),
             $request->get('tags'),
         );
 

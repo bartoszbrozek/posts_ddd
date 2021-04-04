@@ -89,7 +89,11 @@
                   <div class="control">
                     <div class="buttons has-addons">
                       <button class="button">Cancel</button>
-                      <button type="submit" class="button is-success">
+                      <button
+                        type="submit"
+                        class="button is-success"
+                        :class="{ 'is-loading': isProcessing }"
+                      >
                         Create Post
                       </button>
                     </div>
@@ -136,6 +140,7 @@ export default defineComponent({
         content: yup.string().required().min(1),
       }),
       showContentError: false,
+      isProcessing: false,
     };
   },
   created() {
@@ -143,6 +148,9 @@ export default defineComponent({
   },
   methods: {
     onSubmit() {
+      this.isProcessing = true;
+
+      console.log(this.isProcessing);
       if (!this.showContentError) {
         this.createPost();
       }
@@ -157,10 +165,14 @@ export default defineComponent({
     },
 
     createPost(): void {
-      store.dispatch(
-        "posts/add",
-        new NewPostDTO(this.title, this.link, this.content, this.tags)
-      );
+      store
+        .dispatch(
+          "posts/add",
+          new NewPostDTO(this.title, this.link, this.content, this.tags)
+        )
+        .finally(() => {
+          this.isProcessing = false;
+        });
     },
 
     addTag(title: string): void {

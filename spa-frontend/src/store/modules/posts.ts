@@ -37,10 +37,10 @@ const actions = {
 
     },
 
-    add(v: any, newPost: NewPostDTO) {
+    add(v: any, newPost: NewPostDTO): Promise<AxiosResponse<any>> {
         const post = new Post
 
-        post.add(newPost)
+        return post.add(newPost)
     }
 }
 

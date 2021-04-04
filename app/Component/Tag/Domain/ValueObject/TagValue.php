@@ -13,7 +13,7 @@ class TagValue extends StringVO
     {
         // Validate max title length
         if (strlen($value) > self::MAX_LENGTH) {
-            return new InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
 
         parent::__construct($value);
