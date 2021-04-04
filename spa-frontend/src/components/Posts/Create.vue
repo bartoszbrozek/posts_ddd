@@ -51,7 +51,7 @@
 
           <div class="column">
             <label class="label">Tags</label>
-            <div class="field has-addons">
+            <div class="field has-addons tag-field">
               <div class="control">
                 <input
                   class="input"
