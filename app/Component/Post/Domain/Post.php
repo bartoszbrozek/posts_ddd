@@ -27,6 +27,7 @@ final class Post extends AggregateRoot
         private array $tags,
         private User $user,
     ) {
+        $this->checkMaxNumberOfTags($tags);
     }
 
     public static function create(
@@ -62,9 +63,7 @@ final class Post extends AggregateRoot
 
     public function changeTags(array $tags): void
     {
-        if (count($tags > 6)) {
-            throw new TooManyTagsException();
-        }
+        $this->checkMaxNumberOfTags($tags);
 
         $this->tags = $tags;
     }
@@ -94,5 +93,12 @@ final class Post extends AggregateRoot
     public function toSnapshot(): array
     {
         return get_object_vars($this) ?? [];
+    }
+
+    private function checkMaxNumberOfTags(array $tags): void
+    {
+        if (count($tags) > 6) {
+            throw new TooManyTagsException();
+        }
     }
 }

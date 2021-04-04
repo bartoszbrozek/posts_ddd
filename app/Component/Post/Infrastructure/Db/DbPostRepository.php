@@ -12,7 +12,6 @@ use App\Component\Post\Domain\ValueObject\PostTitle;
 use App\Component\Post\Infrastructure\Exception\PostSaveException;
 use App\Component\Post\Infrastructure\PostCollection;
 use App\Presentation\UI\Web\Frontend\Models\User;
-use App\Component\Tag\Domain\Tag;
 use App\Shared\Infrastructure\Db\DbConnection;
 use DateTimeImmutable;
 use Exception;

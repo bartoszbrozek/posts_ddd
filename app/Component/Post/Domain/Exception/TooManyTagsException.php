@@ -4,6 +4,7 @@ namespace App\Component\Post\Domain\Exception;
 
 use Exception;
 
-class PostPublishException extends Exception
+class TooManyTagsException extends Exception
 {
+    protected $message = "Too many tags";
 }
