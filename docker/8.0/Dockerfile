@@ -51,6 +51,7 @@ RUN if [ ${XDEBUG} ] ; then \
     && echo "xdebug.start_with_request = yes" >> /etc/php/8.0/cli/php.ini \
     && echo "xdebug.discover_client_host = true" >> /etc/php/8.0/cli/php.ini \
     && echo "xdebug.idekey=VSCODE" >> /etc/php/8.0/cli/php.ini \
+    && echo "xdebug.mode=develop" >> /etc/php/8.0/cli/php.ini \
     && echo "xdebug.client_host=10.254.254.254" >> /etc/php/8.0/cli/php.ini \
     && echo "xdebug.discover_client_host = 0" >> /etc/php/8.0/cli/php.ini ;\
 fi;
