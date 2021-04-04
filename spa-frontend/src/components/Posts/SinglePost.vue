@@ -3,7 +3,7 @@
     <div class="content">
       <header class="card-header">
         <h1 class="card-header-title mb-0">
-          {{ post.getTitle() }} <span> - by Paolcia</span>
+          {{ post.getValue() }} <span> - by Paolcia</span>
         </h1>
         <div class="up-downvote-container">
           <button class="button h-auto" @click="upvote(post.getUuid())">

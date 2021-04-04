@@ -73,7 +73,7 @@
                 v-for="(tag, key) in tags"
                 :key="key"
               >
-                <span class="tag is-danger">{{ tag.getTitle() }}</span>
+                <span class="tag is-danger">{{ tag.getValue() }}</span>
                 <a class="tag is-delete" @click="removeTag(tag)"></a>
               </div>
             </div>

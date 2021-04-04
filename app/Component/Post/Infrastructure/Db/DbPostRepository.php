@@ -78,29 +78,42 @@ final class DbPostRepository implements PostRepository
         try {
             $this->db->connection()->beginTransaction();
 
-            $data = $post->toSnapshot();
+            $postData = $post->toSnapshot();
             $this->db->connection()
                 ->table(self::TABLE)
                 ->insert([
-                    'id' => $data['id']->uuid(),
-                    'title' => $data['postTitle']->value(),
-                    'link' => $data['postLink']->value(),
-                    'content' => $data['postContent']->value(),
-                    'user_id' => $data['user']->id,
+                    'id' => $postData['id']->uuid(),
+                    'title' => $postData['postTitle']->value(),
+                    'link' => $postData['postLink']->value(),
+                    'content' => $postData['postContent']->value(),
+                    'user_id' => $postData['user']->id,
                     'created_at' => new DateTimeImmutable(),
                 ]);
 
-            // /** @var Tag $tag */
-            // foreach ($data['tags'] as $tag) {
-            //     $tagData = $tag->toSnapshot();
+            $this->db->connection()
+                ->table('post_tag')
+                ->select()
+                ->where('post_id', $postData['id']->uuid())
+                ->delete();
 
-            //     $this->db->connection()
-            //         ->table('tag')
-            //         ->insert([
-            //             'id' => $tagData['id'],
-            //             'value' => $tagData['value'],
-            //         ]);
-            // }
+            // /** @var Tag $tag */
+            foreach ($postData['tags'] as $tag) {
+                $tagData = $tag->toSnapshot();
+
+                $this->db->connection()
+                    ->table('tag')
+                    ->insertOrIgnore([
+                        'id' => $tagData['id']->uuid(),
+                        'value' => $tagData['tagValue']->value(),
+                    ]);
+
+                $this->db->connection()
+                    ->table('post_tag')
+                    ->insert([
+                        'post_id' => $postData['id']->uuid(),
+                        'tag_id' => $tagData['id']->uuid(),
+                    ]);
+            }
 
             $this->db->connection()->commit();
         } catch (Exception $ex) {

@@ -2,16 +2,16 @@ import Restore from '@/store/restore'
 
 @Restore()
 export default class TagDTO {
-    private title: string;
+    private value: string;
     private uuid: string;
 
-    constructor(title: string) {
-        this.title = title;
+    constructor(value: string) {
+        this.value = value;
         this.uuid = btoa(Math.random().toString()).slice(0, 10)
     }
 
-    getTitle(): string {
-        return this.title
+    getValue(): string {
+        return this.value
     }
 
     getUuid(): string {

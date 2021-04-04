@@ -7,6 +7,7 @@ use App\Component\Post\Domain\Event\PostPublished;
 use App\Component\Post\Domain\Event\PostUnpublished;
 use App\Component\Post\Domain\Exception\PostPublishException;
 use App\Component\Post\Domain\Exception\PostUnpublishException;
+use App\Component\Post\Domain\Exception\TooManyTagsException;
 use App\Component\Post\Domain\ValueObject\PostContent;
 use App\Component\Post\Domain\ValueObject\PostId;
 use App\Component\Post\Domain\ValueObject\PostLink;
@@ -61,6 +62,10 @@ final class Post extends AggregateRoot
 
     public function changeTags(array $tags): void
     {
+        if (count($tags > 6)) {
+            throw new TooManyTagsException();
+        }
+
         $this->tags = $tags;
     }
 

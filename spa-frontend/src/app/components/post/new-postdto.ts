@@ -15,7 +15,7 @@ export default class NewPostDTO {
         this.tags = tags;
     }
 
-    getTitle(): string {
+    getValue(): string {
         return this.title
     }
 

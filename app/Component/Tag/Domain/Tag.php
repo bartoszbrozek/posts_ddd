@@ -21,7 +21,7 @@ final class Tag extends AggregateRoot
         return new self($id, $tagValue);
     }
 
-    public function updateValue(TagValue $tagValue): void
+    public function changeValue(TagValue $tagValue): void
     {
         $this->tagValue = $tagValue;
     }
@@ -29,5 +29,10 @@ final class Tag extends AggregateRoot
     public function id(): TagId
     {
         return $this->id;
+    }
+
+    public function toSnapshot(): array
+    {
+        return get_object_vars($this) ?? [];
     }
 }
