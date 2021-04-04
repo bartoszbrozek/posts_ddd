@@ -16,17 +16,30 @@ axiosInstance.defaults.params = {}
 axiosInstance.defaults.params['XDEBUG_SESSION_START'] = 'VSCODE';
 
 axiosInstance.interceptors.response.use((response: AxiosResponse<any>) => {
-    return response
-}, (error: any) => {
-    if ([401, 403].includes(error.response.status)) {
-        localStorage.setItem('vuex', '{}')
-        store.commit("user/SET_IS_LOGGED_IN", false)
-        router.push("/onboarding")
+    const httpCode = response.status
+
+    if (httpCode >= 201 && httpCode < 300) {
+        new MessageDispatcher(store).info(response.data.message);
     }
 
-    if (error.response.status >= 400) {
-        new MessageDispatcher(store).error(error.response.data.message);
+    return response
+}, (error: any) => {
+    if (typeof error.response === 'undefined') {
+        new MessageDispatcher(store).error("Something went wrong");
+    } else {
+        const httpCode = error.response.status
+        if ([401, 403].includes(httpCode)) {
+            localStorage.setItem('vuex', '{}')
+            store.commit("user/SET_IS_LOGGED_IN", false)
+            router.push("/onboarding")
+        }
+
+        if (httpCode >= 400) {
+            new MessageDispatcher(store).error(error.response.data.message);
+        }
     }
+
+
 
     return Promise.reject(error)
 })

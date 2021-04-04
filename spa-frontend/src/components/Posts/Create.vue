@@ -150,7 +150,6 @@ export default defineComponent({
     onSubmit() {
       this.isProcessing = true;
 
-      console.log(this.isProcessing);
       if (!this.showContentError) {
         this.createPost();
       }

@@ -35,7 +35,7 @@ class PostController extends Controller
     {
         try {
             $createPostAction($request, \Auth::user());
-            return SuccessResponse::json([]);
+            return SuccessResponse::json([], 'Post Created Successfully', 201);
         } catch (Exception $ex) {
             return ErrorResponse::json($ex->getMessage());
         }

@@ -4,10 +4,10 @@ namespace App\Shared\Infrastructure\Rest;
 
 final class SuccessResponse
 {
-    public static function json(array $data = [], int $status = 200): \Illuminate\Http\JsonResponse
+    public static function json(array $data = [], string $message = '', int $status = 200): \Illuminate\Http\JsonResponse
     {
         return response()->json(
-            collect($data),
+            collect(array_merge($data, ['message' => $message])),
             $status
         );
     }
