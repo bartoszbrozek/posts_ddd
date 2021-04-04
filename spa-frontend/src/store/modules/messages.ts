@@ -12,6 +12,7 @@ const getters = {
 
 const actions = {
     add(v: any, message: MessageDTO) {
+        console.log(3, message)
         v.state.messages.push(message)
 
         setTimeout(function () {

@@ -1,7 +1,8 @@
 <template>
   <div class="notification is-primary" :class="message.getType()">
     <button class="delete" @click="close(message.getUuid())"></button>
-    <span v-html="message.getMessage()"></span>
+    <strong v-html="message.getTitle()"></strong>
+    <p v-html="message.getMessage()"></p>
   </div>
 </template>
 

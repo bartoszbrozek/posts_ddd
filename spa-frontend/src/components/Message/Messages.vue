@@ -9,26 +9,28 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
 import MessageDTO from "@/app/components/message/messagedto";
 import MsgTemplate from "./MsgTemplate.vue";
 import MessageDispatcher from "@/app/components/message/message-dispatcher";
 import store from "@/store";
+import { defineComponent } from "vue";
 
-@Options({
+export default defineComponent({
   components: {
     MsgTemplate,
   },
-})
-export default class Messages extends Vue {
-  messageDispatcher!: MessageDispatcher;
-
+  data() {
+    return {
+      messageDispatcher: {} as MessageDispatcher,
+    };
+  },
   mounted() {
     this.messageDispatcher = new MessageDispatcher(store);
-  }
-
-  get messages(): Array<MessageDTO> {
-    return store.getters["messages/all"];
-  }
-}
+  },
+  computed: {
+    messages: function (): Array<MessageDTO> {
+      return store.getters["messages/all"];
+    },
+  },
+});
 </script>
