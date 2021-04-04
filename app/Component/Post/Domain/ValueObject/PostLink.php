@@ -16,6 +16,10 @@ class PostLink extends StringVO
             return new InvalidArgumentException();
         }
 
+        if (!empty($value) && !filter_var($value, FILTER_VALIDATE_URL)) {
+            return new InvalidArgumentException();
+        }
+
         parent::__construct($value);
     }
 }

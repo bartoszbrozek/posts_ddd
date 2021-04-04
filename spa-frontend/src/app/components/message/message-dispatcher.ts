@@ -1,8 +1,8 @@
 import MessageDTO from "./messagedto";
 
 export default class MessageDispatcher {
-    store: any;
-    defaultTimeout = 5000;
+    private store: any;
+    private defaultTimeout = 5000;
 
     constructor(store: any) {
         this.store = store
@@ -16,7 +16,6 @@ export default class MessageDispatcher {
     }
 
     error(content: string, title = "Error", timeout = this.defaultTimeout) {
-        console.log(content, title)
         this.store.dispatch(
             "messages/add",
             new MessageDTO(content, title, "is-danger", timeout)

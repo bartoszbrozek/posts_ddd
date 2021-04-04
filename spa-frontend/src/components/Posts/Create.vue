@@ -112,6 +112,7 @@ import store from "@/store";
 import { defineComponent } from "vue";
 import { Field, Form as VeeForm, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import slug from "@/app/tools/slugger";
 
 export default defineComponent({
   components: {
@@ -128,7 +129,7 @@ export default defineComponent({
       link: "",
       content: "",
       tagTitle: "",
-      tags: [] as TagDTO[],
+      tags: [] as Array<TagDTO>,
 
       validationSchema: yup.object({
         title: yup.string().required().min(3),
@@ -139,8 +140,6 @@ export default defineComponent({
   },
   created() {
     this.editor = ClassicEditor;
-    this.editorConfig = {};
-    this.tags = [];
   },
   methods: {
     onSubmit() {
@@ -168,12 +167,18 @@ export default defineComponent({
       const titles = title.split(",");
 
       titles.forEach((eTitle: string) => {
-        const tmpTitle = eTitle.trim();
+        const tmpTitle = slug(eTitle.trim());
         if (tmpTitle.length <= 0) {
           return;
         }
 
-        this.tags.push(new TagDTO(tmpTitle));
+        const tag = new TagDTO(tmpTitle);
+
+        if (
+          this.tags.filter((e: TagDTO) => e.getValue() === tmpTitle).length <= 0
+        ) {
+          this.tags.push(tag);
+        }
       });
 
       this.tagTitle = "";
