@@ -88,7 +88,7 @@
 
                   <div class="control">
                     <div class="buttons has-addons">
-                      <button class="button">Cancel</button>
+                      <button class="button" @click="cancel()">Cancel</button>
                       <button
                         type="submit"
                         class="button is-success"
@@ -113,6 +113,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import TagDTO from "@/app/components/post/tag";
 import NewPostDTO from "@/app/components/post/new-postdto";
 import store from "@/store";
+import router from "@/router";
 import { defineComponent } from "vue";
 import { Field, Form as VeeForm, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
@@ -147,12 +148,16 @@ export default defineComponent({
     this.editor = ClassicEditor;
   },
   methods: {
-    onSubmit() {
+    onSubmit(): void {
       this.isProcessing = true;
 
       if (!this.showContentError) {
         this.createPost();
       }
+    },
+
+    cancel(): void {
+      router.push("/");
     },
 
     validateContent(): void {
