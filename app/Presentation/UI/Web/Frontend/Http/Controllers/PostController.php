@@ -4,6 +4,7 @@ namespace App\Presentation\UI\Web\Frontend\Http\Controllers;
 
 use App\Component\Post\Port\Rest\CreatePostAction;
 use App\Component\Post\Port\Rest\GetAllPostsAction;
+use App\Component\Post\Port\Rest\GetSinglePostAction;
 use App\Shared\Infrastructure\Rest\ErrorResponse;
 use App\Shared\Infrastructure\Rest\SuccessResponse;
 use Exception;
@@ -11,13 +12,13 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index(GetAllPostsAction $getAllPostsAction)
+    public function findOne(string $uuid, GetSinglePostAction $getSinglePostAction)
     {
         try {
-            $posts = $getAllPostsAction()->all();
-            return SuccessResponse::json($posts);
+            $post = $getSinglePostAction($uuid);
+            return SuccessResponse::json($post->toArray());
         } catch (Exception $ex) {
-            return ErrorResponse::json($ex->getMessage());
+            return ErrorResponse::json($ex->getMessage(), [], 400, $ex);
         }
     }
 

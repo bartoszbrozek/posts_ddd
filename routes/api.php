@@ -28,3 +28,9 @@ Route::middleware('auth:sanctum')->get(
     '/posts/paginate/{number}',
     [PostController::class, 'paginate',],
 )->name('post.paginate');
+
+
+Route::middleware('auth:sanctum')->get(
+    '/posts/{uuid}',
+    [PostController::class, 'findOne',],
+)->name('post.findOne');

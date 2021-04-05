@@ -14,7 +14,8 @@ final class PostDTO implements Arrayable
         private string $content,
         private string $userName,
         private DateTimeImmutable $createdAt,
-        private DateTimeImmutable $updatedAt,
+        private ?DateTimeImmutable $updatedAt,
+        private array $tags = [],
     ) {
     }
 
@@ -48,9 +49,14 @@ final class PostDTO implements Arrayable
         return $this->createdAt;
     }
 
-    public function updatedAt(): DateTimeImmutable
+    public function updatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function tags(): array
+    {
+        return $this->tags;
     }
 
     public static function fromArray(array $data): PostDTO

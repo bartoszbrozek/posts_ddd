@@ -20,7 +20,9 @@
         <div class="content" v-html="post.getContent()"></div>
       </div>
       <footer class="card-footer">
-        <a href="#" class="card-footer-item">Show more...</a>
+        <router-link :to="`/posts/${post.getUuid()}`" class="card-footer-item"
+          >Show more...</router-link
+        >
         <a href="#" class="card-footer-item" target="_blank">
           {{ post.getLink() }}</a
         >

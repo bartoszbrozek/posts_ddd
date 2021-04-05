@@ -11,7 +11,10 @@ use App\Component\Post\Domain\ValueObject\PostLink;
 use App\Component\Post\Domain\ValueObject\PostTitle;
 use App\Component\Post\Infrastructure\Exception\PostSaveException;
 use App\Component\Post\Infrastructure\PostCollection;
-use App\Presentation\UI\Web\Frontend\Models\User;
+use App\Component\Tag\Domain\Tag;
+use App\Component\Tag\Domain\ValueObject\TagId;
+use App\Component\Tag\Domain\ValueObject\TagValue;
+use App\Shared\Infrastructure\Auth\User as AuthUser;
 use App\Shared\Infrastructure\Db\DbConnection;
 use DateTimeImmutable;
 use Exception;
@@ -52,23 +55,58 @@ final class DbPostRepository implements PostRepository
         return $collection;
     }
 
-    // TODO
+    private function findTagsByPostId(PostId $postId): array
+    {
+        $tags = [];
+        $tagsData = $this->db->connection()
+            ->table('tag')
+            ->join('post_tag AS pt', 'pt.tag_id', '=', 'tag.id')
+            ->where('pt.post_id', $postId->uuid())
+            ->get([
+                'tag.id',
+                'tag.value',
+            ]);
+
+        foreach ($tagsData as $tag) {
+            $tags[$tag->id] = Tag::create(new TagId($tag->id), new TagValue($tag->value));
+        }
+
+        return $tags;
+    }
+
     public function findBy(PostId $postId): Post
     {
         $data = $this->db->connection()
             ->table(self::TABLE)
-            ->leftJoin('tags', '', '') // TODO
-            ->join('user', '', '') // TODO
-            ->where('uuid', $postId)
-            ->first();
+            ->join('users AS u', 'u.id', '=', self::TABLE . '.user_id')
+            ->first([
+                self::TABLE . '.id',
+                self::TABLE . '.title',
+                self::TABLE . '.link',
+                self::TABLE . '.content',
+                self::TABLE . '.created_at',
+                self::TABLE . '.updated_at',
+                'u.id AS user_id',
+                'u.name AS user_name',
+                'u.email AS user_email',
+            ]);
+
+
+        $tags = $this->findTagsByPostId(new PostId($data->id));
 
         return new Post(
-            new PostId($data['id']),
-            new PostTitle($data['title']),
-            new PostLink($data['link']),
-            new PostContent($data['content']),
-            $data['tags'],
-            new User($data['user']),
+            new PostId($data->id),
+            new PostTitle($data->title),
+            new PostLink($data->link),
+            new PostContent($data->content),
+            new DateTimeImmutable($data->created_at),
+            new DateTimeImmutable($data->updated_at),
+            $tags,
+            new AuthUser([
+                'id' => $data->user_id,
+                'name' => $data->user_name,
+                'email' => $data->user_email,
+            ]),
         );
     }
 
@@ -80,14 +118,19 @@ final class DbPostRepository implements PostRepository
             $postData = $post->toSnapshot();
             $this->db->connection()
                 ->table(self::TABLE)
-                ->insert([
-                    'id' => $postData['id']->uuid(),
-                    'title' => $postData['postTitle']->value(),
-                    'link' => $postData['postLink']->value(),
-                    'content' => $postData['postContent']->value(),
-                    'user_id' => $postData['user']->id,
-                    'created_at' => new DateTimeImmutable(),
-                ]);
+                ->updateOrInsert(
+                    [
+                        'id' => $postData['id']->uuid(),
+                        'user_id' => $postData['user']->id,
+                    ],
+                    [
+                        'title' => $postData['title']->value(),
+                        'link' => $postData['link']->value(),
+                        'content' => $postData['content']->value(),
+                        'created_at' => $postData['createdAt'],
+                        'updated_at' => $postData['updatedAt'],
+                    ]
+                );
 
             $this->db->connection()
                 ->table('post_tag')

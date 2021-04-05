@@ -27,6 +27,13 @@ const routes: Array<RouteRecordRaw> = [
     name: 'About',
     component: () => import('../views/About.vue'),
     meta: { authRequired: true },
+  },
+  {
+    path: '/posts/:uuid',
+    name: 'PostDetails',
+    component: () => import('../views/PostDetails.vue'),
+    meta: { authRequired: true },
+    props: true,
   }
 ]
 

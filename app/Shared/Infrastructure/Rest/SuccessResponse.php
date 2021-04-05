@@ -7,7 +7,7 @@ final class SuccessResponse
     public static function json(array $data = [], string $message = '', int $status = 200): \Illuminate\Http\JsonResponse
     {
         return response()->json(
-            collect(array_merge($data, ['message' => $message])),
+            ['data' => collect($data), 'message' => $message],
             $status
         );
     }

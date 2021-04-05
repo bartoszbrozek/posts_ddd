@@ -18,7 +18,7 @@ axiosInstance.defaults.params['XDEBUG_SESSION_START'] = 'VSCODE';
 axiosInstance.interceptors.response.use((response: AxiosResponse<any>) => {
     const httpCode = response.status
 
-    if (httpCode >= 201 && httpCode < 300) {
+    if (httpCode >= 201 && httpCode < 300 && response.data.message.length > 0) {
         new MessageDispatcher(store).info(response.data.message);
     }
 

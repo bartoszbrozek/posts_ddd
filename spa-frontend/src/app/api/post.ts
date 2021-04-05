@@ -17,4 +17,10 @@ export default class Post {
 
         return axios.post(`/posts`, newPost);
     }
+
+    async fetchOne(uuid: string): Promise<AxiosResponse<any>> {
+        await this.csrf.getCookie();
+
+        return axios.get(`/posts/${uuid}`);
+    }
 }

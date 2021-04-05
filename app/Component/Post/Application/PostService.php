@@ -11,6 +11,7 @@ use App\Component\Tag\Domain\ValueObject\TagId;
 use App\Component\Tag\Domain\ValueObject\TagValue;
 use App\Shared\Domain\DomainEventDispatcherInterface;
 use App\Shared\Infrastructure\Auth\User;
+use DateTimeImmutable;
 
 class PostService
 {
@@ -29,12 +30,16 @@ class PostService
             $tags[$uuid->uuid()] = Tag::create($uuid, new TagValue($tag['value']));
         }
 
+        $now = new DateTimeImmutable();
+
         $postId = PostId::random();
         $postAggregate = new PostAggregate(
             $postId,
             $command->getPostTitle(),
             $command->getPostLink(),
             $command->getPostContent(),
+            $now,
+            $now,
             $tags,
             $user,
         );

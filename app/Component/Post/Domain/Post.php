@@ -14,6 +14,7 @@ use App\Component\Post\Domain\ValueObject\PostLink;
 use App\Component\Post\Domain\ValueObject\PostTitle;
 use App\Shared\Domain\AggregateRoot;
 use App\Shared\Infrastructure\Auth\User;
+use DateTimeImmutable;
 
 final class Post extends AggregateRoot
 {
@@ -21,9 +22,11 @@ final class Post extends AggregateRoot
 
     public function __construct(
         private PostId $id,
-        private PostTitle $postTitle,
-        private PostLink $postLink,
-        private PostContent $postContent,
+        private PostTitle $title,
+        private PostLink $link,
+        private PostContent $content,
+        private DateTimeImmutable $createdAt,
+        private DateTimeImmutable $updatedAt,
         private array $tags,
         private User $user,
     ) {
@@ -35,10 +38,12 @@ final class Post extends AggregateRoot
         PostTitle $postTitle,
         PostLink $postLink,
         PostContent $postContent,
+        DateTimeImmutable $createdAt,
+        DateTimeImmutable $updatedAt,
         array $tags,
         User $user,
     ): Post {
-        return new self($id, $postTitle, $postLink, $postContent, $tags, $user,);
+        return new self($id, $postTitle, $postLink, $postContent, $createdAt, $updatedAt, $tags, $user,);
     }
 
     public function id(): PostId
